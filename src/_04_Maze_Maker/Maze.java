@@ -24,7 +24,11 @@ cells = new Cell[width][height];
 
 	//4. This method iterates through the cells and draws them
 	public void draw(Graphics g) {
-		
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells.length; j++) {
+				cells[i][j].draw(g);
+			}
+		}
 	}
 	
 	//4b. This method returns the selected cell.

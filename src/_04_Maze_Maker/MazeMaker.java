@@ -31,7 +31,7 @@ public class MazeMaker {
 	// 6. Complete the selectNextPathMethod
 	private static void selectNextPath(Cell currentCell) {
 		// A. mark cell as visited
-		currentCell.hasBeenVisited();
+		currentCell.setBeenVisited(true);
 		// B. check for unvisited neighbors using the cell
 		getUnvisitedNeighbors(currentCell);
 		// C. if has unvisited neighbors,
@@ -45,8 +45,8 @@ public class MazeMaker {
 			// C3. remove the wall between the two cells
 			removeWalls(currentCell, unvisited);
 			// C4. make the new cell the current cell and mark it as visited
-			unvisited = currentCell;
-			currentCell.hasBeenVisited();
+			currentCell = unvisited;
+			currentCell.setBeenVisited(true);
 			// C5. call the selectNextPath method with the current cell
 			selectNextPath(currentCell);
 		}
@@ -59,7 +59,7 @@ public class MazeMaker {
 				// D1a. pop a cell from the stack
 				Cell cellStack = uncheckedCells.pop();
 				// D1b. make that the current cell
-				cellStack = currentCell;
+				currentCell = cellStack;
 				// D1c. call the selectNextPath method with the current cell
 				selectNextPath(currentCell);
 			}
@@ -70,25 +70,26 @@ public class MazeMaker {
 	// This method will check if c1 and c2 are adjacent.
 	// If they are, the walls between them are removed.
 	private static void removeWalls(Cell c1, Cell c2) {
-		if (c2.getX() < c1.getX()) {
+		
+		if (c2.getX() + 1 == c1.getX()) {
 			c1.setWestWall(false);
 			c2.setEastWall(false);
-			
+
 		}
-		if (c2.getX() > c1.getX()) {
+		if (c2.getX() - 1 == c1.getX()) {
 			c1.setEastWall(false);
 			c2.setWestWall(false);
-			
+
 		}
-		if (c2.getY() < c1.getY()) {
+		if (c2.getY() + 1 == c1.getY()) {
 			c1.setNorthWall(false);
 			c2.setSouthWall(false);
-			
+
 		}
-		if (c2.getY() > c1.getY()) {
+		if (c2.getY() - 1 == c1.getY()) {
 			c1.setSouthWall(false);
 			c2.setNorthWall(false);
-			
+
 		}
 	}
 
@@ -100,17 +101,23 @@ public class MazeMaker {
 		int y = c.getY();
 		
 		ArrayList<Cell> unvisitedNeighbors = new ArrayList<Cell>();
-		if (x > 0 && !maze.getCell(x - 1, y).hasBeenVisited()) {
-			unvisitedNeighbors.add(maze.getCell(x-1, y));
-		}
-		if (y > 0 && !maze.getCell(x, y - 1).hasBeenVisited()) {
-			unvisitedNeighbors.add(maze.getCell(x, y - 1));
-		}
-		if (x < width - 1 && !maze.getCell(x + 1, y).hasBeenVisited()) {
-			unvisitedNeighbors.add(maze.getCell(x+1, y));
-		}
-		if (x < height - 1 && !maze.getCell(x, y + 1).hasBeenVisited()) {
-			unvisitedNeighbors.add(maze.getCell(x, y + 1));
+		
+		for (int i = c.getX() -  1; i <= c.getX() + 1; i++) {
+			for (int j = c.getY() - 1; j <= c.getY() + 1; j++) {
+				
+				if ((i == x - 1 && j == y - 1)||
+					(i == x - 1 && j == y + 1)||
+					(i == x + 1 && j == y - 1)||
+					(i == x + 1 && j == y + 1)||
+					(i == x && j == y)) {
+					
+				}
+				else if (i >= 0 && i < width && j >= 0 && j < height && !maze.getCell(i, j).hasBeenVisited()) {
+					//!maze.getCell(i, j).hasBeenVisited() works above because all of the &&s it has passed. If they didn't work then they would have exited the if statement.
+						unvisitedNeighbors.add(maze.getCell(i, j));
+					
+				}
+			}
 		}
 		return unvisitedNeighbors;
 	}
