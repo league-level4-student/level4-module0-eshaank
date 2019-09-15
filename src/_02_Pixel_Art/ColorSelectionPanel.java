@@ -4,17 +4,16 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.util.Hashtable;
+import java.io.Serializable;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class ColorSelectionPanel extends JPanel implements MouseListener, ChangeListener{
+public class ColorSelectionPanel extends JPanel implements MouseListener, ChangeListener, Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	public static final int MAX_COLOR = 256;
